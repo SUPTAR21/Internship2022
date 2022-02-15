@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver-app
+  labels:
+    app: echoserver-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver-app
+  template:
+    metadata:
+      labels:
+        app: echoserver-app
+    spec:
+      containers:
+      - name: echoserver-app
+        image: ealen/echo-server:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: echoserver-app

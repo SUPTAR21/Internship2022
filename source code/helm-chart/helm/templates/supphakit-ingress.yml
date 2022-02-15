@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  {{- if .Values.ingress.annotations }}
+  annotations:
+  {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+spec:
+  rules:
+   - host: {{ .Values.ingress.host }}
+     http:
+        paths:
+          - path: {{ .Values.echoserver.path }}
+            pathType: {{ .Values.echoserver.pathType }}
+            backend:
+              serviceName: {{ .Values.echoserver.name }}-svc
+              servicePort: {{ .Values.echoserver.servicePort }}
+
+          - path: {{ .Values.helloworld.path }}
+            pathType: {{ .Values.helloworld.pathType }}
+            backend:
+              serviceName: {{ .Values.helloworld.name }}-svc
+              servicePort: {{ .Values.helloworld.servicePort }}

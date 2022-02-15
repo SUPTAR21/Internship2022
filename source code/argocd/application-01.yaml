@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: application-helm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/SUPTAR21/argocd-workshop.git"
+    path: helm
+    targetRevision: HEAD
+    helm:
+      values: |-
+        ...
+        ... helm valuse ...
+        ...
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: helm
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
