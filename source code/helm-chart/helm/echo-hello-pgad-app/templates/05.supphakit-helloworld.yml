@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.helloworld.name }}
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.helloworld.name }}
+spec:
+  replicas: {{ .Values.helloworld.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-{{ .Values.helloworld.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-{{ .Values.helloworld.name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-{{ .Values.helloworld.name }}
+        image: {{ .Values.helloworld.image }}
+        ports:
+        - containerPort: {{ .Values.helloworld.containerPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.helloworld.name }}-svc
+spec:
+  type: {{ .Values.helloworld.serviceType }}
+  ports:
+  - port: {{ .Values.helloworld.servicePort }}
+  selector:
+    app: {{ .Release.Name }}-{{ .Values.helloworld.name }}

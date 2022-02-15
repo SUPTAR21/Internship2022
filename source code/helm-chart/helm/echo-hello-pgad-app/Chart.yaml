@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Microservice Helm Chart Contain echo-server, hello-world and pgadmin applications 
+name: Microservice
+version: 1.0.0
