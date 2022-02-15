@@ -1,0 +1,24 @@
+echoserver:
+  name: echoserver
+  image: ealen/echo-server:latest
+  replicas: 1
+  containerPort: 80
+  serviceType: ClusterIP
+  servicePort: 80
+  path: /echo
+  pathType: Exact
+helloworld:
+  name: helloworld
+  image: tutum/hello-world:latest
+  replicas: 1
+  containerPort: 80
+  serviceType: ClusterIP
+  servicePort: 80
+  path: /hello
+  pathType: Exact
+ingress:
+  host: ...
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.org/rewrites: "serviceName=echoserver-svc rewrite=/"
+    nginx.org/rewrites: "serviceName=helloworld-svc rewrite=/"

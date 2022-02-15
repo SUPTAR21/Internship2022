@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.echoserver.name }}
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.echoserver.name }}
+spec:
+  replicas: {{ .Values.echoserver.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-{{ .Values.echoserver.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-{{ .Values.echoserver.name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-{{ .Values.echoserver.name }}
+        image: {{ .Values.echoserver.image }}
+        ports:
+        - containerPort: {{ .Values.echoserver.containerPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.echoserver.name }}-svc
+spec:
+  type: {{ .Values.echoserver.serviceType }}
+  ports:
+  - port: {{ .Values.echoserver.servicePort }}
+  selector:
+    app: {{ .Release.Name }}-{{ .Values.echoserver.name }}
